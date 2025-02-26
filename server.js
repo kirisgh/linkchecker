@@ -22,8 +22,15 @@ app.get("/", (req, res) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
+}).on("error", (err) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(`❌ Port ${PORT} is already in use.`);
+    process.exit(1);
+  } else {
+    console.error(`❌ Server error: ${err.message}`);
+  }
 });
 
 app.get("/check-link", async (req, res) => {

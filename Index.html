@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #8B2D2D;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .header img {
+                width: 30px;
+                margin-right: 10px;
+            }
+
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 90%;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        input {
+            padding: 10px;
+            width: 100%;
+            border: 2px solid black;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 2px solid black;
+            background-color: #8B2D2D;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 200px;
+        }
+
+            button:hover {
+                background-color: #A94444;
+            }
+
+        .warning-box {
+            display: none;
+            background-color: #fff3f3;
+            border: 2px solid #8B2D2D;
+            color: #8B2D2D;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 400px;
+            text-align: left;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+            .warning-box ul {
+                list-style-type: disc;
+                margin-left: 20px;
+                font-size: 16px;
+                font-weight: normal;
+            }
+
+        .footer {
+            background-color: #8B2D2D;
+            height: 50px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://cdn-icons-png.flaticon.com/512/49/49116.png" alt="Magnifying Glass">
+        LINK CHECKER
+    </div>
+
+    <div class="container">
+        <input type="text" id="urlInput" placeholder="Enter Link Here">
+        <button onclick="checkLink()">CHECK</button>
+        <div id="result" class="warning-box"></div>
+    </div>
+
+    <div class="footer"></div>
+
+    <script>
+        function checkLink() {
+            let url = document.getElementById("urlInput").value.trim();
+            let resultDiv = document.getElementById("result");
+
+            if (!url) {
+                resultDiv.innerHTML = "❌ Please enter a URL";
+                resultDiv.style.display = "block";
+                return;
+            }
+
+            if (!url.startsWith("http")) {
+                url = "https://" + url;
+            }
+
+            fetch(`http://localhost:3000/check-link?url=${encodeURIComponent(url)}`)
+                .then(response => response.json())
+                .then(data => {
+                    let warningText = "";
+
+                    if (data.status === "working") {
+                        warningText = "✅ Link is safe and working!";
+                    } else {
+                        warningText = `<p>⚠️ WARNING!</p><ul>`;
+                        data.warnings.forEach(warning => {
+                            warningText += `<li>${warning.reason}</li>`;
+                        });
+                        warningText += `</ul>`;
+                    }
+
+                    resultDiv.innerHTML = warningText;
+                    resultDiv.style.display = "block";
+                })
+                .catch(error => {
+                    resultDiv.innerHTML = `<p>❌ Error: ${error.message}</p>`;
+                    resultDiv.style.display = "block";
+                });
+        }
+    </script>
+</body>
+</html>

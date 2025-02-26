@@ -1,0 +1,26 @@
+{
+  "name": "my-node-app",
+  "version": "1.0.0",
+  "description": "A Node.js backend using Express, Puppeteer, and other dependencies.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+  "express": "^4.21.2",
+  "cors": "^2.8.5",
+  "dotenv": "^16.4.7",
+  "puppeteer": "^24.3.0",
+  "jsdom": "^26.0.0",
+  "node-fetch": "^3.3.2",
+  "whois-json": "^2.0.4",
+  "chrome-aws-lambda": "^10.0.0"
+},
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

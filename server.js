@@ -22,12 +22,14 @@ app.get("/", (req, res) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  console.log(`✅ Server running on port ${server.address().port}`);
 }).on("error", (err) => {
   if (err.code === "EADDRINUSE") {
-    console.error(`❌ Port ${PORT} is already in use.`);
-    process.exit(1);
+    console.warn(`⚠️ Port ${PORT} is already in use. Trying a different port...`);
+    const newServer = app.listen(0, () => {
+      console.log(`✅ Server started on new port ${newServer.address().port}`);
+    });
   } else {
     console.error(`❌ Server error: ${err.message}`);
   }

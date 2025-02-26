@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -129,7 +129,7 @@
                 url = "https://" + url;
             }
 
-            fetch(`http://localhost:3000/check-link?url=${encodeURIComponent(url)}`)
+            fetch(`https://linkchecker-206d.onrender.com/check-link?url=${encodeURIComponent(url)}`)
                 .then(response => response.json())
                 .then(data => {
                     let warningText = "";

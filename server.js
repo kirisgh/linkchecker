@@ -12,10 +12,6 @@ const GOOGLE_SAFE_BROWSING_API_KEY = "AIzaSyBkg5kLoZKK7_bZO - bvzjb8jUWkj_58XWA"
 app.use(cors());
 app.use(express.json());
 
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
-
 // Enable CORS
 app.use(cors());
 

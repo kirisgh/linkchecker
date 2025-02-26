@@ -8,7 +8,7 @@ require("dotenv").config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const GOOGLE_SAFE_BROWSING_API_KEY = process.env.GOOGLE_SAFE_BROWSING_API_KEY || "YOUR_GOOGLE_SAFE_BROWSING_API_KEY";
+const GOOGLE_SAFE_BROWSING_API_KEY = "AIzaSyBkg5kLoZKK7_bZO - bvzjb8jUWkj_58XWA";
 
 app.use(cors());
 app.use(express.json());

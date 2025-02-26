@@ -8,16 +8,14 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
-    "cors": "^2.8.5",
-    "dns": "^0.2.2",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "jsdom": "^26.0.0",
-    "node-fetch": "^3.3.2",
-    "puppeteer": "^24.3.0",
-    "tls": "^0.0.1",
-    "whois-json": "^2.0.4"
-  },
+  "express": "^4.21.2",
+  "cors": "^2.8.5",
+  "dotenv": "^16.4.7",
+  "puppeteer": "^24.3.0",
+  "jsdom": "^26.0.0",
+  "node-fetch": "^3.3.2",
+  "whois-json": "^2.0.4"
+},
   "devDependencies": {
     "nodemon": "^3.0.1"
   },

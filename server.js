@@ -3,7 +3,8 @@ const cors = require("cors");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const tls = require("tls");
 const https = require("https");
-const puppeteer = require("puppeteer");
+const chromium = require("chrome-aws-lambda");
+const puppeteer = require("puppeteer-core");
 require("dotenv").config();
 
 const app = express();
@@ -129,17 +130,17 @@ async function checkForMalware(url) {
 async function checkForAds(url) {
     try {
         const browser = await puppeteer.launch({
-    headless: "new",
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    executablePath: "/opt/render/.cache/puppeteer/chrome/linux-133.0.6943.126/chrome-linux64/chrome"
-});
+            executablePath: await chromium.executablePath,
+            headless: true,
+            args: chromium.args,
+        });
 
         const page = await browser.newPage();
-        await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
         await page.goto(url, { waitUntil: "load", timeout: 30000 });
 
         const ads = await page.evaluate(() => document.querySelectorAll("iframe, div[id*='ad'], [class*='ad']").length);
         await browser.close();
+
         return ads > 3 ? "📢 Excessive ads/pop-ups detected" : null;
     } catch (error) {
         console.error("🚨 Ad detection failed:", error.message);

@@ -22,18 +22,20 @@ app.get("/", (req, res) => {
 // Start server
 const PORT = process.env.PORT || 3000;
 
-const server = app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${server.address().port}`);
-}).on("error", (err) => {
-  if (err.code === "EADDRINUSE") {
-    console.warn(`⚠️ Port ${PORT} is already in use. Trying a different port...`);
-    const newServer = app.listen(0, () => {
-      console.log(`✅ Server started on new port ${newServer.address().port}`);
+function startServer(port) {
+    const server = app.listen(port, () => {
+        console.log(`✅ Server running on port ${server.address().port}`);
+    }).on("error", (err) => {
+        if (err.code === "EADDRINUSE") {
+            console.warn(`⚠️ Port ${port} is already in use. Trying a different port...`);
+            startServer(0); // Pick a random available port
+        } else {
+            console.error(`❌ Server error: ${err.message}`);
+        }
     });
-  } else {
-    console.error(`❌ Server error: ${err.message}`);
-  }
-});
+}
+
+startServer(PORT);
 
 app.get("/check-link", async (req, res) => {
     let url = req.query.url;

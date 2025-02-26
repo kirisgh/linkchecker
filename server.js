@@ -1,4 +1,4 @@
-﻿const express = require("express");
+const express = require("express");
 const cors = require("cors");
 const fetch = (...args) => import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const tls = require("tls");
@@ -11,6 +11,23 @@ const GOOGLE_SAFE_BROWSING_API_KEY = "AIzaSyBkg5kLoZKK7_bZO - bvzjb8jUWkj_58XWA"
 
 app.use(cors());
 app.use(express.json());
+
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+
+// Enable CORS
+app.use(cors());
+
+// Test route for "/"
+app.get("/", (req, res) => {
+  res.send("Server is running! 🎉");
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 app.get("/check-link", async (req, res) => {
     let url = req.query.url;

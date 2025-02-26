@@ -131,7 +131,7 @@ async function checkForAds(url) {
         const browser = await puppeteer.launch({
     headless: "new",
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    executablePath: "/opt/render/.cache/puppeteer"
+    executablePath: "/opt/render/.cache/puppeteer/chrome/linux-133.0.6943.126/chrome-linux64/chrome"
 });
 
         const page = await browser.newPage();

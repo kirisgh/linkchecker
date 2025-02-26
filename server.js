@@ -126,7 +126,11 @@ async function checkForMalware(url) {
 
 async function checkForAds(url) {
     try {
-        const browser = await puppeteer.launch({ headless: "new", args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+        const browser = await puppeteer.launch({
+            headless: "new",
+            args: ["--no-sandbox", "--disable-setuid-sandbox"],
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || "/opt/render/.cache/puppeteer/chrome/linux-133.0.6943.126/chrome-linux64/chrome"
+          });
         const page = await browser.newPage();
         await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)");
         await page.goto(url, { waitUntil: "load", timeout: 30000 });

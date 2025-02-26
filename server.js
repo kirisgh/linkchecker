@@ -6,7 +6,6 @@ const puppeteer = require("puppeteer");
 require("dotenv").config();
 
 const app = express();
-const PORT = 3000;
 const GOOGLE_SAFE_BROWSING_API_KEY = "AIzaSyBkg5kLoZKK7_bZO - bvzjb8jUWkj_58XWA";
 
 app.use(cors());
@@ -21,8 +20,10 @@ app.get("/", (req, res) => {
 });
 
 // Start server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✅ Server running on port ${PORT}`);
 });
 
 app.get("/check-link", async (req, res) => {

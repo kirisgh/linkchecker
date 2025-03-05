@@ -25,26 +25,19 @@ app.listen(PORT, () => {
 });
 
 // ✅ Run Puppeteer
-async function runPuppeteer() {
-    let browser = null;
-    try {
-        browser = await puppeteer.launch({
-            args: chromium.args,
-            executablePath: await chromium.executablePath || puppeteer.executablePath(),
-            headless: chromium.headless,
-            defaultViewport: chromium.defaultViewport,
-        });
+(async () => {
+    const browser = await puppeteer.launch({
+        args: chromium.args,
+        executablePath: await chromium.executablePath,
+        headless: chromium.headless
+    });
 
-        const page = await browser.newPage();
-        await page.goto('https://example.com', { waitUntil: 'load' });
+    const page = await browser.newPage();
+    await page.goto("https://example.com");
 
-        console.log(await page.title());
-    } catch (error) {
-        console.error("❌ Puppeteer failed:", error);
-    } finally {
-        if (browser) await browser.close();
-    }
-}
+    console.log(await page.title());
+    await browser.close();
+})();
 
 
 runPuppeteer();

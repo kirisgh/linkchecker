@@ -25,11 +25,11 @@ app.listen(PORT, () => {
 });
 
 // ✅ Run Puppeteer
-(async () => {
-    const browser = await puppeteer.launch({
-        args: chromium.args,
-        executablePath: await chromium.executablePath,
-        headless: chromium.headless
+async function runPuppeteer() {
+    let browser = null;
+    try {
+          const browser = await puppeteer.launch({
+        headless: true
     });
 
     const page = await browser.newPage();

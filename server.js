@@ -26,23 +26,26 @@ app.listen(PORT, () => {
 
 // ✅ Run Puppeteer
 async function runPuppeteer() {
-  try {
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath, // Use chrome-aws-lambda’s path
-      headless: true,
-    });
+    let browser = null;
+    try {
+        browser = await puppeteer.launch({
+            args: chromium.args,
+            executablePath: await chromium.executablePath || puppeteer.executablePath(),
+            headless: chromium.headless,
+            defaultViewport: chromium.defaultViewport,
+        });
 
-    const page = await browser.newPage();
-    await page.goto("https://example.com");
+        const page = await browser.newPage();
+        await page.goto('https://example.com', { waitUntil: 'load' });
 
-    console.log(await page.title());
-
-    await browser.close();
-  } catch (error) {
-    console.error("❌ Puppeteer failed:", error.message);
-  }
+        console.log(await page.title());
+    } catch (error) {
+        console.error("❌ Puppeteer failed:", error);
+    } finally {
+        if (browser) await browser.close();
+    }
 }
+
 
 runPuppeteer();
 
@@ -148,21 +151,22 @@ async function checkHttpStatus(url) {
 
 // ✅ Test Puppeteer on Deployment
 async function testPuppeteer() {
-  try {
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath,
-      headless: true,
-    });
+    let browser = null;
+    try {
+        browser = await puppeteer.launch({
+            args: chromium.args,
+            executablePath: await chromium.executablePath || puppeteer.executablePath(),
+            headless: chromium.headless,
+        });
 
-    const page = await browser.newPage();
-    await page.goto("https://www.google.com", { waitUntil: "load", timeout: 10000 });
-
-    console.log("✅ Puppeteer is working!");
-    await browser.close();
-  } catch (error) {
-    console.error("❌ Puppeteer test failed:", error.message);
-  }
+        const page = await browser.newPage();
+        await page.goto("https://www.google.com", { waitUntil: "load", timeout: 10000 });
+        console.log("✅ Puppeteer is working!");
+    } catch (error) {
+        console.error("❌ Puppeteer test failed:", error.message);
+    } finally {
+        if (browser) await browser.close();
+    }
 }
 
 testPuppeteer();

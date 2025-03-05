@@ -33,6 +33,23 @@ function startServer(port) {
     });
 }
 
+async function runPuppeteer() {
+    const browser = await puppeteer.launch({
+        args: chromium.args,
+        executablePath: await chromium.executablePath, // Use chrome-aws-lambda’s path
+        headless: true,
+    });
+
+      const page = await browser.newPage();
+    await page.goto('https://example.com');
+    
+    console.log(await page.title());
+
+    await browser.close();
+}
+
+runPuppeteer().catch(console.error);
+
 startServer(PORT);
 
 // ✅ Main API Endpoint
@@ -128,12 +145,7 @@ async function checkForMalware(url) {
 
 // ✅ Puppeteer Ad Detection
 async function checkForAds(url) {
-    try {
-        const browser = await puppeteer.launch({
-            headless: "new",
-            args: ["--no-sandbox", "--disable-setuid-sandbox"],
-            executablePath: process.env.CHROMIUM_PATH || puppeteer.executablePath(), // Force Puppeteer to use its built-in Chromium
-        });
+   
 
         const page = await browser.newPage();
         await page.goto(url, { waitUntil: "load", timeout: 30000 });
@@ -152,10 +164,6 @@ async function checkForAds(url) {
 
 // ✅ Redirect Detection
 async function checkForRedirects(url) {
-    try {
-        const browser = await puppeteer.launch({ headless: "new" });
-        const page = await browser.newPage();
-        await page.goto(url, { waitUntil: "domcontentloaded", timeout: 10000 });
 
         await page.waitForNavigation({ timeout: 30000 }).catch(() => { });
         const finalUrl = page.url();
